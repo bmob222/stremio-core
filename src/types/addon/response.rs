@@ -69,10 +69,20 @@ use crate::types::{
 #[serde(rename_all = "camelCase")]
 pub struct ResourceResponseCache {
     /// (in seconds) which sets the `Cache-Control` header to `max-age=$cacheMaxAge` and overwrites the global cache time set in serveHTTP options
+    /// 
+    /// **Caching for RealDebrid/Debrid Services:**
+    /// This controls how long stream links (including auth tokens) remain valid before needing refresh.
+    /// Typical values: 3600 (1 hour) for cached/premium links.
     pub cache_max_age: Option<u64>,
     /// (in seconds) which sets the `Cache-Control` header to `stale-while-revalidate=$staleRevalidate`
+    /// 
+    /// Allows using stale links while fetching fresh ones in the background.
+    /// Useful for debrid services to prevent playback interruption.
     pub stale_revalidate: Option<u64>,
     /// (in seconds) which sets the `Cache-Control` header to `stale-if-error=$staleError`
+    /// 
+    /// If revalidation fails, stale links can still be used for this duration.
+    /// Important for debrid services when API is temporarily unavailable.
     pub stale_error: Option<u64>,
     #[serde(flatten)]
     pub resource: ResourceResponse,

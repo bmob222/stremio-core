@@ -102,6 +102,18 @@ pub fn update_streams<E: Env + 'static>(
     }
 }
 
+/// **PERSISTENT STREAM CACHING**: Saves selected streams to storage
+/// 
+/// This persists stream data across application restarts, including:
+/// - Stream URLs (e.g., RealDebrid/Premiumize links)
+/// - Authentication headers (proxy_headers)
+/// - Playback state (position, watched time)
+/// - Addon source information
+/// 
+/// **Cache Lifetime:**
+/// - Persists until user logs out or manually clears
+/// - Links remain valid based on addon's `cache_max_age` setting
+/// - Separate from in-memory ResourceLoadable cache
 fn push_streams_to_storage<E: Env + 'static>(streams: &StreamsBucket) -> Effect {
     EffectFuture::Sequential(
         E::set_storage(STREAMS_STORAGE_KEY, Some(&streams))
