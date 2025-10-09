@@ -31,6 +31,11 @@ Stremio allows, using its [Add-ons system](https://github.com/Stremio/stremio-ad
 	* `msg`: messages: actions, events
 	* `models`: all stateful models, such as `Context` (handling user authentication, add-ons), `Library`, `CatalogFiltered`, etc.
 
+### Documentation
+
+* [**Cache Architecture for RealDebrid/Debrid Services**](./CACHE_OVERVIEW.md) - Quick visual overview of how stream links are cached
+* [**Detailed Cache Documentation**](./CACHE_DOCUMENTATION.md) - In-depth explanation of the multi-layered caching system
+
 
 
 ```
