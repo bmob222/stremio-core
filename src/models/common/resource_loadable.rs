@@ -171,7 +171,9 @@ where
                 .map(|(_, request)| {
                     resources
                         .iter()
-                        // Check if we've seen this request before and return it (caching) requests which are the same
+                        // **IN-MEMORY CACHING**: Check if we've seen this request before and return it (caching) requests which are the same
+                        // This prevents redundant HTTP requests to addons (e.g., RealDebrid, Premiumize)
+                        // Cached responses include stream URLs with auth tokens, valid until HTTP cache expires
                         // We can also pass `force = true` to always trigger a new request.
                         .find(|resource| {
                             resource.request == request && resource.content.is_some() && !force

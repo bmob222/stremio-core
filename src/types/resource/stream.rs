@@ -519,11 +519,33 @@ where
     ))
 }
 
+/// Proxy headers for streams requiring authentication (e.g., RealDebrid, Premiumize).
+/// 
+/// **Cache Behavior:**
+/// These headers are cached along with the stream URL in the `ResourceLoadable` cache.
+/// When the streaming server proxies the request, it includes these headers automatically.
+/// Headers remain valid for the duration specified in `ResourceResponseCache.cache_max_age`.
+/// 
+/// **Example Usage:**
+/// ```json
+/// {
+///   "url": "https://webdav.premiumize.me/video.mkv",
+///   "behaviorHints": {
+///     "proxyHeaders": {
+///       "request": {
+///         "Authorization": "Bearer YOUR_TOKEN"
+///       }
+///     }
+///   }
+/// }
+/// ```
 #[derive(Default, Clone, PartialEq, Eq, Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct StreamProxyHeaders {
+    /// Headers to include in the request to the stream source
     #[serde(default, skip_serializing_if = "HashMap::is_empty")]
     pub request: HashMap<String, String>,
+    /// Headers to include in the response to the client
     #[serde(default, skip_serializing_if = "HashMap::is_empty")]
     pub response: HashMap<String, String>,
 }
@@ -538,6 +560,7 @@ pub struct StreamBehaviorHints {
     pub binge_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub country_whitelist: Option<Vec<String>>,
+    /// Authentication headers for debrid/premium services (cached with stream)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub proxy_headers: Option<StreamProxyHeaders>,
     #[serde(skip_serializing_if = "Option::is_none")]
